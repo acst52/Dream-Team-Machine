@@ -94,3 +94,33 @@ switch (roleAnswers.role) {
    }
 };
 
+// straight copy pasted from README generator. Swapped data --> employees
+function writeToFile(fileName, employees) {
+      return fs.writeFileSync(path.join(process.cwd(), fileName), employees);
+}
+
+// Whoh there, there's no "I" in "team" - let's keep running createEmployee until all team members added:
+const init = async() => {
+      while (true) {
+            const employee = await createEmployee();
+            employees.push(employee);
+        
+            const addAnother = await inquirer.prompt([
+              {
+                type: 'confirm',
+                name: 'addAnother',
+                message: 'Add another employee?',
+                default: false
+              }
+            ]);
+        
+            if (!addAnother.addAnother) {
+              break; // if no no add another, get out of fcn...
+            }
+          }
+      console.log("Generating your HTML file!"); // ... and write the file with all the fun personal info your team definitely wants on the WWW!
+      writeToFile("./dist/index.html", generateHTML(employees))
+};
+
+// set off the cascade of events above!
+init();
