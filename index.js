@@ -57,3 +57,40 @@ function createIntern() {
    })
 });
 }
+
+// let's create employees based on their role, then summon a switch so they can be prompted with appropriate questions
+      // if user chooses Engineer, call the createEngineer fcn that has all the common Q's + engineer Q
+      // make a new Engineer employee, then push it to the employees array. Same for Manager & Intern
+const createEmployee = async () => {
+      let employee;
+      const roleAnswers = await inquirer.prompt([
+            {
+            type: 'list',
+            name: 'role',
+            message: 'What is your job title? ',
+            choices: ['Manager', 'Engineer', 'Intern']
+            }
+      ]);
+        
+switch (roleAnswers.role) {
+      case 'Manager':
+            return createManager().then(newManager => {
+                  employee = { ...newManager, title: 'Manager' };
+                  employees.push(employee);
+            return employee;
+      });
+      case 'Engineer':
+            return createEngineer().then(newEngineer => {
+                  employee = { ...newEngineer, title: 'Engineer' };
+                  employees.push(employee);
+            return employee;
+      });
+      case 'Intern':
+            return createIntern().then(newIntern => {
+                  employee = { ...newIntern, title: 'Intern' };
+                  employees.push(employee);
+            return employee;
+      });
+   }
+};
+
