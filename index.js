@@ -1,126 +1,107 @@
-// let's start with the require statements to import modules:
+// TODO:
+  // 1. fix html output issue (see generateHTML.js)
+  // 2. unit tests w/ jest?!
+
+// first import all required modules
 const inquirer = require('inquirer');
 const fs = require('fs');
+const path = require('path');
 
-// now let's import our classes from the classes.js file in lib:
+// lets also import our helper function
+const generateHTML = require('./src/generateHTML');
+
+// and finally import our classes
 const Manager = require('./lib/classes');
 const Engineer = require('./lib/classes');
 const Intern = require('./lib/classes');
 
-let employee = [];
+// set up vars for path and html file name
+const directoryName = path.resolve(__dirname, "dist");
+const distPath = path.join(directoryName, "index.html");
 
-// now lets create fcns for each Employee type that contain the common + role-specific Qs
-function createManager() {
-      return new Promise((resolve) => {
+// set the employees array up globally
+let employees = [];
+
+// now lets create fcns for each Employee type that contain the common + role-specific Qs... to be called upon in a switch later
+function mainMenu() {
+      function createManager() {
+                  inquirer.prompt([
+                  { name: 'name', message: 'What is the team manager\'s name? ' },
+                  { name: 'id', message: 'What is the manager\' ID? ' },
+                  { name: 'email', message: 'What is the manager\' email? ' },
+                  { name: 'officeNumber', message: 'Manager office number: ' },
+                  ]).then(managerAnswers => {
+                        const manager = new Manager (
+                              managerAnswers.name,
+                              managerAnswers.id,
+                              managerAnswers.email,
+                              managerAnswers.officeNumber
+                        );
+                        employees.push(manager);
+                        createTeam();
+            })
+         }
+
+      function createTeam() {
             inquirer.prompt([
-            { name: 'name', message: 'What is your name? ' },
-            { name: 'id', message: 'What is your employee ID? ' },
-            { name: 'email', message: 'What is your employee email? ' },
-      ]).then(commonAnswers => {
-            inquirer.prompt([
-            { name: 'officeNumber', message: 'office number: ' },
-            ]).then(managerAnswers => {
-            resolve(new Manager(commonAnswers.name, commonAnswers.id, commonAnswers.email, managerAnswers.officeNumber));
-      })
-   })
-});
-}
-        
-function createEngineer() {
-      return new Promise((resolve) => {
-            inquirer.prompt([
-            { name: 'name', message: 'What is your name? ' },
-            { name: 'id', message: 'What is your employee ID? ' },
-            { name: 'email', message: 'What is your employee email? ' },
-      ]).then(commonAnswers => {
-            inquirer.prompt([
-              { name: 'github', message: 'GitHub username: ' },
+                  { type: 'list', 
+                  name: 'choice', 
+                  message: 'Which type of team member would you like to add next? ', 
+                  choices: ["Engineer", "Intern", "I don't want to add any more team members"]}
+
+            ]).then((choice) => {
+                  switch (choice.choice) {
+                        case 'Engineer': 
+                        createEngineer();
+                        break;
+                        case 'Intern':
+                        createIntern();
+                        break;
+                        default: writeFile();
+                  }
+            })
+      }
+      function createEngineer() {
+                  inquirer.prompt([
+                  { name: 'engineerName', message: 'What is the engineer\'s name? ' },
+                  { name: 'engineerId', message: 'What is the engineer\'s ID? ' },
+                  { name: 'engineerEmail', message: 'What is the engineer\'s email? ' },
+                  { name: 'github', message: 'what is the engineer\'s GitHub username: ' },
             ]).then(engineerAnswers => {
-            resolve(new Engineer(commonAnswers.name, commonAnswers.id, commonAnswers.email, engineerAnswers.github));
+                  const engineer = new Engineer (
+                        engineerAnswers.engineerName,
+                        engineerAnswers.engineerId,
+                        engineerAnswers.engineerEmail,
+                        engineerAnswers.github
+                  );
+                  employees.push(engineer);
+                  createTeam();
       })
-   })
-});
-}
-
-function createIntern() {
-      return new Promise((resolve) => {
-            inquirer.prompt([
-            { name: 'name', message: 'What is your name? ' },
-            { name: 'id', message: 'What is your employee ID? ' },
-            { name: 'email', message: 'What is your employee email? ' },
-      ]).then(commonAnswers => {
-            inquirer.prompt([
-                  { name: 'school', message: 'school attended: ' },
-            ]).then(internAnswers => {
-            resolve(new Intern(commonAnswers.name, commonAnswers.id, commonAnswers.email, internAnswers.school));
-      })
-   })
-});
-}
-
-// let's create employees based on their role, then summon a switch so they can be prompted with appropriate questions
-      // if user chooses Engineer, call the createEngineer fcn that has all the common Q's + engineer Q
-      // make a new Engineer employee, then push it to the employees array. Same for Manager & Intern
-const createEmployee = async () => {
-      let employee;
-      const roleAnswers = await inquirer.prompt([
-            {
-            type: 'list',
-            name: 'role',
-            message: 'What is your job title? ',
-            choices: ['Manager', 'Engineer', 'Intern']
-            }
-      ]);
-        
-switch (roleAnswers.role) {
-      case 'Manager':
-            return createManager().then(newManager => {
-                  employee = { ...newManager, title: 'Manager' };
-                  employees.push(employee);
-            return employee;
-      });
-      case 'Engineer':
-            return createEngineer().then(newEngineer => {
-                  employee = { ...newEngineer, title: 'Engineer' };
-                  employees.push(employee);
-            return employee;
-      });
-      case 'Intern':
-            return createIntern().then(newIntern => {
-                  employee = { ...newIntern, title: 'Intern' };
-                  employees.push(employee);
-            return employee;
-      });
    }
+   function createIntern() {
+            inquirer.prompt([
+            { name: 'internName', message: 'What is the intern\'s name? ' },
+            { name: 'InternId', message: 'What is the intern\'s ID? ' },
+            { name: 'InternEmail', message: 'What is the intern\'s email? ' },
+            { name: 'school', message: 'which school did the intern attend: ' },
+            ]).then(internAnswers => {
+                  const intern = new Intern (
+                        internAnswers.internName,
+                        internAnswers.internId,
+                        internAnswers.internEmail,
+                        internAnswers.school
+                  );
+                  employees.push(intern);
+                  createTeam();
+      })
 };
-
-// straight copy pasted from README generator. Swapped data --> employees
-function writeToFile(fileName, employees) {
-      return fs.writeFileSync(path.join(process.cwd(), fileName), employees);
+function writeFile() {
+      if (!fs.existsSync(directoryName)) {
+            fs.mkdirSync(directoryName)
+      }
+      fs.writeFileSync(distPath, generateHTML(employees), "utf-8")
 }
-
-// Whoh there, there's no "I" in "team" - let's keep running createEmployee until all team members added:
-const init = async() => {
-      while (true) {
-            const employee = await createEmployee();
-            employees.push(employee);
-        
-            const addAnother = await inquirer.prompt([
-              {
-                type: 'confirm',
-                name: 'addAnother',
-                message: 'Add another employee?',
-                default: false
-              }
-            ]);
-        
-            if (!addAnother.addAnother) {
-              break; // if no no add another, get out of fcn...
-            }
-          }
-      console.log("Generating your HTML file!"); // ... and write the file with all the fun personal info your team definitely wants on the WWW!
-      writeToFile("./dist/index.html", generateHTML(employees))
+createManager();
 };
 
-// set off the cascade of events above!
-init();
+mainMenu();
