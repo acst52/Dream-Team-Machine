@@ -1,31 +1,71 @@
-function generateHTML(employees) {
-  // lets iterate through all employees added to the array and make them their own divs:
-  employees.forEach((employee) => {
-
-    employeeCard += `
-      <div class="card">
-        <div class="card-container">
-          <h2>${employee.name}</h2>
-          <p><strong>ID:</strong> ${employee.id}</p>
-          <p><strong>Email:</strong> ${employee.email}</p>
-          <p><strong>Role:</strong> ${employee.title}</p>
-    `;
-    // now let's add the role-specific Q&A to their cards
-    if (employee instanceof Manager) {
-      employeeCard += `<p class="employee-info">Office Number: ${employee.officeNumber}</p>`;
-    } else if (employee instanceof Engineer) {
-      employeeCard += `<p class="employee-info">GitHub: ${employee.github}</p>`;
-    } else if (employee instanceof Intern) {
-      employeeCard += `<p class="employee-info">School: ${employee.school}</p>`;
-    }
-    employeeCard += `
+// lets generate the HTML code with employee-specific cards:
+const generateTeam = (team) => {
+    const managerCard = manager => {
+      return `
+      <div class="card employee-card">
+        <div class="card-header">
+            <h2 class="card-title">${manager.getName()}</h2>
+            <h3 class="card-title"><i class="fas fa-mug-hot mr-2"></i>${manager.getRole()}</h3>
         </div>
+        <div class="card-body">
+            <ul class="list-group">
+                <li class="list-group-item">ID: ${manager.getId()}</li>
+                <li class="list-group-item">Email: <a href="mailto:${manager.getEmail()}">${manager.getEmail()}</a></li>
+                <li class="list-group-item">Office number: ${manager.getOfficeNumber()}</li>
+            </ul>
+        </div>
+    </div>
+      `
+    }
+
+    const engineerCard = engineer => {
+      return `
+      <div class="card employee-card">
+      <div class="card-header">
+          <h2 class="card-title">${engineer.getName()}</h2>
+          <h3 class="card-title"><i class="fas fa-mug-hot mr-2"></i>${engineer.getRole()}</h3>
       </div>
-    `;
-  });
-// finally let's add the above to our basic HTML page. Note there is a linked stylesheet,
-  // which will be in the same dist dir as the generated index.html
-  return `<!DOCTYPE html>
+      <div class="card-body">
+          <ul class="list-group">
+              <li class="list-group-item">ID: ${engineer.getId()}</li>
+              <li class="list-group-item">Email: <a href="mailto:${engineer.getEmail()}">${engineer.getEmail()}</a></li>
+              <li class="list-group-item">GitHub: ${engineer.getGithub()}</li>
+          </ul>
+      </div>
+  </div>
+      `
+    }
+
+    const internCard = intern => {
+      return `
+      <div class="card employee-card">
+      <div class="card-header">
+          <h2 class="card-title">${intern.getName()}</h2>
+          <h3 class="card-title"><i class="fas fa-mug-hot mr-2"></i>${intern.getRole()}</h3>
+      </div>
+      <div class="card-body">
+          <ul class="list-group">
+              <li class="list-group-item">ID: ${intern.getId()}</li>
+              <li class="list-group-item">Email: <a href="mailto:${intern.getEmail()}">${intern.getEmail()}</a></li>
+              <li class="list-group-item">School: ${intern.getSchool()}</li>
+          </ul>
+      </div>
+  </div>
+      `
+    }
+  
+// sort thru diff employees: filter through employees, map Role for each, push to html so they are in order
+const html = [];
+html.push(team.filter(employee => employee.getRole() === "Manager").map(manager => managerCard(manager)))
+html.push(team.filter(employee => employee.getRole() === "Engineer").map(engineer => engineerCard(engineer)))
+html.push(team.filter(employee => employee.getRole() === "Intern").map(intern => internCard(intern)))
+return html.join('');
+};
+
+// export this helper fcn so we can import into our main script; inside return basic HTML structure to file
+module.exports = team => {
+  return `
+  <!DOCTYPE html>
     <html lang="en-US">
       <head>
         <meta charset="UTF-8" />
@@ -35,14 +75,21 @@ function generateHTML(employees) {
         <link rel="stylesheet" href="style.css" />
       </head>
       <body>
-        <header>
-          <h1>Meet Our Dream Team!</h1>
-        </header>
-        <main>
-          ${employeeCard}
-          </main>
-          </body>
-        </html>
-      `;
-}
+      <div class="container-fluid">
+          <div class="row">
+              <div class="col-12 p-5 mb-3 team-heading">
+                  <h1 class="text-center">My Team</h1>
+              </div>
+          </div>
+      </div>
+      <div class="container">
+          <div class="row">
+              <div class="team-area col-12 d-flex justify-content-center">
+                  ${generateTeam(team)}
+              </div>
+          </div>
+      </div>
+  </body>
+  </html>
+  `
 };
