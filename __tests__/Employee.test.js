@@ -38,7 +38,7 @@ describe('Employee', () => {
     });
   });
   
-// To run this test file using Jest, in your CLI, type "npx jest test/Employee.test.js"
+// To run this test file using Jest, in your CLI, type "npx jest __tests__/Employee.test.js"
   // any failures or errors will be reported in the CLI.
 
 // We can also configure Jest to run all the tests in the "__tests__" directory
