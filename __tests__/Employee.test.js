@@ -8,35 +8,35 @@
 const Employee = require('./lib/classes');
 
 describe('Employee', () => {
-    describe('getName', () => {
-      it('should return the name of the employee', () => {
-        const employee = new Employee('John Doe', 1, 'johndoe@test.com');
-        expect(employee.getName()).toEqual('John Doe');
-      });
-    });
+  let employee;
 
-// Now let's verify the behavior of each method:
-    describe('getId', () => {
-      it('should return the ID of the employee', () => {
-        const employee = new Employee('John Doe', 1, 'johndoe@test.com');
-        expect(employee.getId()).toEqual(1);
-      });
-    });
-  
-    describe('getEmail', () => {
-      it('should return the email of the employee', () => {
-        const employee = new Employee('John Doe', 1, 'johndoe@test.com');
-        expect(employee.getEmail()).toEqual('johndoe@test.com');
-      });
-    });
-  
-    describe('getRole', () => {
-      it('should return the role of the employee', () => {
-        const employee = new Employee('John Doe', 1, 'johndoe@test.com');
-        expect(employee.getRole()).toEqual('Employee');
-      });
-    });
+  beforeEach(() => {
+    employee = new Employee('Ashley', 1234, 'acst52@test.com');
   });
+
+  it('should return the name of the employee', () => {
+    expect(employee.getName()).toEqual('Ashley');
+  });
+
+  it('should return the employee ID', () => {
+    expect(employee.getId()).toEqual(1234);
+  });
+
+  it('should return the employee email', () => {
+    expect(employee.getEmail()).toEqual('acst52@test.com');
+  });
+
+  it('should return the role of the employee', () => {
+    expect(employee.getRole()).toEqual('Employee');
+  });
+
+  it('should have values for all properties', () => {
+    expect(employee.name.toBe(true));
+    expect(employee.id.toBe(true));
+    expect(employee.email.toBe(true));
+  });
+});
+
   
 // To run this test file using Jest, in your CLI, type "npx jest __tests__/Employee.test.js"
   // any failures or errors will be reported in the CLI.
