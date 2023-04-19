@@ -1,11 +1,6 @@
-// The following unit tests should ensure that the classes are working as expected 
-    // and that any changes to the code don't break the existing functionality
-
-// Note that to run these tests using Jest, first i jest as a dev dependency
-  // by running "npm i --save-dev jest" in your project dir's CLI
-
 // In order to test the Employee class, we must first import it:
-const Employee = require('./lib/classes');
+  // bc classes are all in one file and exported together, they needed to be destructured for import. This is why the tests were not running!
+const { Employee } = require('../lib/classes');
 
 describe('Employee', () => {
   let employee;
@@ -31,21 +26,8 @@ describe('Employee', () => {
   });
 
   it('should have values for all properties', () => {
-    expect(employee.name.toBe(true));
-    expect(employee.id.toBe(true));
-    expect(employee.email.toBe(true));
+    expect(employee.name).toBeTruthy();
+    expect(employee.id).toBeTruthy();
+    expect(employee.email).toBeTruthy();
   });
 });
-
-  
-// To run this test file using Jest, in your CLI, type "npx jest __tests__/Employee.test.js"
-  // any failures or errors will be reported in the CLI.
-
-// We can also configure Jest to run all the tests in the "__tests__" directory
-  // by adding the following to the package.json file:
-// "jest": {
-//   "testMatch": [
-//     "**/__tests__/*test.js"
-//   ]
-// }
-  // then we can run all Class & assoc method tests by running "npx jest" in our CLI.
