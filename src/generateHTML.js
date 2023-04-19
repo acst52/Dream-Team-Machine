@@ -32,7 +32,7 @@ const generateTeam = (team) => {
               <li class="list-group-item">GitHub: ${engineer.getGithub()}</li>
           </ul>
       </div>
-  </div>
+      </div>
       `
     }
 
@@ -56,9 +56,18 @@ const generateTeam = (team) => {
   
 // sort thru diff employees: filter through employees, map Role for each, push to html so they are in order
 const html = [];
-html.push(team.filter(employee => employee.getRole() === "Manager").map(manager => managerCard(manager)))
-html.push(team.filter(employee => employee.getRole() === "Engineer").map(engineer => engineerCard(engineer)))
-html.push(team.filter(employee => employee.getRole() === "Intern").map(intern => internCard(intern)))
+html.push(team
+    .filter(employee => employee.getRole() === "Manager")
+    .map(manager => managerCard(manager))
+);
+html.push(team
+    .filter(employee => employee.getRole() === "Engineer")
+    .map(engineer => engineerCard(engineer))
+);
+html.push(team
+    .filter(employee => employee.getRole() === "Intern")
+    .map(intern => internCard(intern))
+);
 return html.join('');
 };
 
