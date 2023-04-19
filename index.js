@@ -1,7 +1,3 @@
-// TODO:
-  // 1. fix html output issue (see generateHTML.js)
-  // 2. unit tests w/ jest?!
-
 // first import all required modules
 const inquirer = require('inquirer');
 const fs = require('fs');
@@ -11,9 +7,7 @@ const path = require('path');
 const generateHTML = require('./src/generateHTML');
 
 // and finally import our classes
-const Manager = require('./lib/classes');
-const Engineer = require('./lib/classes');
-const Intern = require('./lib/classes');
+const { Manager, Engineer, Intern } = require('./lib/classes');
 
 // set up vars for path and html file name
 const directoryName = path.resolve(__dirname, "dist");
@@ -81,8 +75,8 @@ function mainMenu() {
    function createIntern() {
             inquirer.prompt([
             { name: 'internName', message: 'What is the intern\'s name? ' },
-            { name: 'InternId', message: 'What is the intern\'s ID? ' },
-            { name: 'InternEmail', message: 'What is the intern\'s email? ' },
+            { name: 'internId', message: 'What is the intern\'s ID? ' },
+            { name: 'internEmail', message: 'What is the intern\'s email? ' },
             { name: 'school', message: 'which school did the intern attend: ' },
             ]).then(internAnswers => {
                   const intern = new Intern (
