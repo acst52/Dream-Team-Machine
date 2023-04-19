@@ -1,6 +1,4 @@
-// Jest tests
-
-const Engineer = require('./lib/classes');
+const { Engineer } = require('../lib/classes');
 
 describe('Engineer', () => {
     describe('getGithub', () => {
@@ -17,3 +15,4 @@ describe('Engineer', () => {
       });
     });
   });
+  
