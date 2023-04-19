@@ -3,8 +3,7 @@
 
 ## Description
 
-In this Module 10 Challenge, we were tasked to build a Node.js command-line application that accepts user input about their team's employees, then generates an HTML webpage with employee cards. We used the Inquirer package so the user could be easily asked questions in the terminal, and wrote unit tests run by Jest. You can peep my walkthrough video here: 
-[![mod-10-walkthrough-video](https://user-images.githubusercontent.com/116177485/233153435-012e99ff-c94d-4216-9b16-7738768cc75f.png)](https://drive.google.com/file/d/1HoErfqDvKoKpV_MODY1H-4rNsjhax5Kf/view)
+In this Module 10 Challenge, we were tasked to build a Node.js command-line application that accepts user input about their team's employees, then generates an HTML webpage with employee cards. We used the Inquirer package so the user could be easily asked questions in the terminal, and wrote unit tests run by Jest. You can peep my walkthrough video [here.](https://drive.google.com/file/d/1HoErfqDvKoKpV_MODY1H-4rNsjhax5Kf/view)
 
 ## Table of Contents
 
