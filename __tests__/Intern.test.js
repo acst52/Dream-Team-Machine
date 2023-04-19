@@ -1,6 +1,4 @@
-// Jest tests
-
-const Intern = require('./lib/classes');
+const { Intern } = require('../lib/classes');
 
 describe('Intern', () => {
     describe('getSchool', () => {
@@ -17,3 +15,4 @@ describe('Intern', () => {
       });
     });
   });
+  
